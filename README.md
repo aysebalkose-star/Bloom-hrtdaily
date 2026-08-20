@@ -1,8 +1,9 @@
-# Bloom — HRT Tracker
+# Bloom — Menopause HRT Tracker
 
-A gentle, private, offline-capable PWA for tracking hormone replacement therapy —
-doses, monthly planning, symptoms and a journal. All data lives in the visitor's
-own browser (localStorage); there is no account and no server.
+A gentle, private, offline-capable PWA for tracking menopause & perimenopause
+hormone replacement therapy — oestrogen/progesterone/testosterone doses, monthly
+planning, symptoms and a journal. All data lives in the visitor's own browser
+(localStorage); there is no account and no server.
 
 **Live site:** https://hrtdaily.com · **App:** https://hrtdaily.com/app.html
 

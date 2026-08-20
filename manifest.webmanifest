@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Bloom — HRT Tracker",
+  "name": "Bloom — Menopause HRT Tracker",
   "short_name": "Bloom",
-  "description": "A gentle, private HRT tracker: doses, monthly planning, symptoms and journal. Works offline, stored on your device.",
+  "description": "A gentle, private menopause HRT tracker: doses, monthly planning, symptoms and journal. Works offline, stored on your device.",
   "lang": "en",
   "dir": "ltr",
   "start_url": "./app.html",
