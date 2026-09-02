@@ -1,8 +1,8 @@
 {
   "id": "/",
-  "name": "Bloom — Menopause HRT Tracker",
-  "short_name": "Bloom",
-  "description": "A gentle, private menopause HRT tracker: doses, monthly planning, symptoms and journal. Works offline, stored on your device.",
+  "name": "HRT Daily — Menopause HRT Tracker",
+  "short_name": "HRT Daily",
+  "description": "A gentle, private menopause HRT tracker: doses, monthly planning, a daily note and journal. Works offline, stored on your device.",
   "lang": "en",
   "dir": "ltr",
   "start_url": "./app.html",
@@ -10,8 +10,8 @@
   "display": "standalone",
   "orientation": "portrait",
   "categories": ["health", "medical", "lifestyle"],
-  "background_color": "#FBF6F0",
-  "theme_color": "#F7E4E1",
+  "background_color": "#F6F9FC",
+  "theme_color": "#EAF1F9",
   "icons": [
     {
       "src": "./icon-192.png",

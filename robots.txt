@@ -1,4 +1,4 @@
-# Bloom — HRT Tracker
+# HRT Daily — HRT Tracker
 # Everyone is welcome to crawl the marketing pages, including AI search engines.
 
 User-agent: *

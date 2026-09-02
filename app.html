@@ -2,12 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<title>Bloom — Menopause HRT Tracker</title>
-<meta name="description" content="Bloom menopause HRT tracker app (hormone therapy / MHT): plan your month, log estrogen (oestrogen) and progesterone doses, track hot flashes and other symptoms, and keep a private journal. Works offline, stored on your device.">
+<title>HRT Daily — Menopause HRT Tracker</title>
+<meta name="description" content="HRT Daily menopause HRT tracker app (hormone therapy / MHT): plan your month, log estrogen (oestrogen) and progesterone doses, track hot flashes and other symptoms, and keep a private journal. Works offline, stored on your device.">
 <meta name="robots" content="noindex, follow">
 <link rel="canonical" href="https://hrtdaily.com/app.html">
 <meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Bloom">
+<meta name="apple-mobile-web-app-title" content="HRT Daily">
 <meta name="mobile-web-app-capable" content="yes">
 <script src="./support.js"></script><link rel="manifest" href="./manifest.webmanifest"><meta name="theme-color" content="#EAF1F9"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><link rel="apple-touch-icon" href="./icon-192.png"><link rel="icon" type="image/png" href="./icon-192.png"><script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('./sw.js'));</script>
 </head>
@@ -32,11 +32,13 @@
       <!-- TODAY + PLAN -->
       <sc-if value="{{ showToday }}" hint-placeholder-val="{{ true }}">
         <div style="display:flex;flex-direction:column;gap:24px;">
-          <div style="display:flex;align-items:flex-end;gap:10px;">
-            <div style="flex:1;display:flex;flex-direction:column;gap:5px;">
-              <div style="font-family:'Newsreader',serif;font-size:32px;font-weight:700;color:oklch(26% 0.05 250);">{{ greeting }}</div>
-              <div style="font-size:17px;color:oklch(48% 0.038 246);">{{ todayLabel }}</div>
-            </div>
+          <div style="display:flex;align-items:center;">
+            <button onClick="{{ goHome }}" style="border:none;background:none;font-family:'Newsreader',serif;font-size:24px;font-weight:700;letter-spacing:0.03em;color:oklch(47% 0.125 245);cursor:pointer;padding:0;">HRT Daily</button>
+            <div style="flex:1;"></div>
+            <a href="{{ reviewUrl }}" target="_blank" style="text-decoration:none;border:1.5px solid oklch(52% 0.14 340);background:oklch(52% 0.14 340);color:#FFF;font-weight:700;font-size:14px;padding:8px 14px;border-radius:99px;">★ Review</a>
+          </div>
+          <div style="display:flex;align-items:center;gap:10px;">
+            <div style="flex:1;font-family:'Newsreader',serif;font-size:26px;font-weight:700;color:oklch(26% 0.05 250);">{{ todayLabel }}</div>
             <sc-if value="{{ hasMeds }}" hint-placeholder-val="{{ true }}">
               <button onClick="{{ openAdd }}" style="border:none;background:oklch(47% 0.125 245);color:#FFF;font-weight:700;font-size:15px;padding:11px 18px;border-radius:12px;cursor:pointer;white-space:nowrap;" style-hover="filter:brightness(1.08);">+ Add</button>
             </sc-if>
@@ -55,8 +57,16 @@
                     <div style="font-size:13px;font-weight:700;padding:6px 13px;border-radius:99px;background:{{ m.badgeBg }};color:{{ m.badgeFg }};white-space:nowrap;">{{ m.due }}</div>
                   </div>
                   <div style="display:flex;align-items:center;gap:10px;">
-                    <div style="flex:1;font-size:15px;color:oklch(48% 0.038 246);">{{ m.lastLabel }}</div>
-                    <button onClick="{{ m.onLog }}" style="border:none;background:{{ m.deep }};color:#FFF;font-weight:700;font-size:16px;padding:12px 20px;border-radius:12px;cursor:pointer;" style-hover="filter:brightness(1.08);">{{ m.logLabel }}</button>
+                    <sc-if value="{{ m.hasLast }}" hint-placeholder-val="{{ false }}">
+                      <div style="flex:1;font-size:15px;color:oklch(48% 0.038 246);">{{ m.lastLabel }}</div>
+                    </sc-if>
+                    <sc-if value="{{ m.hasLast }}" hint-placeholder-val="{{ false }}">
+                      <button onClick="{{ m.onLog }}" style="border:none;background:{{ m.deep }};color:#FFF;font-weight:700;font-size:16px;padding:12px 20px;border-radius:12px;cursor:pointer;" style-hover="filter:brightness(1.08);">{{ m.logLabel }}</button>
+                    </sc-if>
+                    <sc-if value="{{ m.noLast }}" hint-placeholder-val="{{ false }}">
+                      <div style="flex:1;"></div>
+                      <button onClick="{{ m.onLog }}" style="border:none;background:{{ m.deep }};color:#FFF;font-weight:700;font-size:16px;padding:12px 20px;border-radius:12px;cursor:pointer;" style-hover="filter:brightness(1.08);">{{ m.logLabel }}</button>
+                    </sc-if>
                   </div>
                   <div style="display:flex;gap:8px;padding-top:12px;border-top:1.5px solid oklch(93% 0.014 245);">
                     <button onClick="{{ m.onEdit }}" style="flex:1;border:1.5px solid oklch(90% 0.022 245);background:oklch(98.2% 0.008 245);border-radius:10px;padding:10px;font-size:14px;font-weight:700;color:oklch(47% 0.125 245);cursor:pointer;" style-hover="background:#FFF;">Edit</button>
@@ -70,8 +80,9 @@
 
           <sc-if value="{{ noMeds }}" hint-placeholder-val="{{ false }}">
             <div style="background:#FFFFFF;border-radius:22px;padding:26px;display:flex;flex-direction:column;gap:16px;box-shadow:0 2px 10px rgba(30,58,84,0.06);">
-              <div style="font-family:'Newsreader',serif;font-size:20px;font-weight:600;color:oklch(26% 0.05 250);">Set up your treatments</div>
-              <div style="font-size:16px;color:oklch(48% 0.038 246);line-height:1.55;">Add what you take and how often — we'll keep track of when each dose is due. Start from a common option or add your own.</div>
+              <button onClick="{{ openAdd }}" style="border:none;background:none;padding:0;margin:0;text-align:left;cursor:pointer;display:flex;flex-direction:column;gap:6px;" style-hover="opacity:0.85;">
+                <div style="font-family:'Newsreader',serif;font-size:20px;font-weight:600;color:oklch(26% 0.05 250);">Set up your treatments</div>
+              </button>
               <div style="display:flex;flex-direction:column;gap:9px;">
                 <sc-for list="{{ presets }}" as="p" hint-placeholder-count="4">
                   <button onClick="{{ p.onAdd }}" style="border:1.5px solid oklch(90% 0.022 245);background:oklch(98.2% 0.008 245);border-radius:14px;padding:14px 17px;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left;" style-hover="border-color:oklch(78% 0.05 245);background:#FFF;">
@@ -81,13 +92,13 @@
                   </button>
                 </sc-for>
               </div>
-              <button onClick="{{ openAdd }}" style="border:none;background:none;color:oklch(47% 0.125 245);font-weight:700;font-size:15px;cursor:pointer;padding:4px;">+ Add a custom treatment</button>
+              <button onClick="{{ openAdd }}" style="border:2px solid oklch(47% 0.125 245);background:oklch(93.5% 0.03 240);color:oklch(47% 0.125 245);font-weight:700;font-size:16px;cursor:pointer;padding:15px 17px;border-radius:14px;text-align:center;" style-hover="background:oklch(90% 0.036 240);">+ Add a custom treatment</button>
             </div>
           </sc-if>
 
           <sc-if value="{{ showReviewAsk }}" hint-placeholder-val="{{ false }}">
             <div style="background:#FFFFFF;border:1.5px solid oklch(91.5% 0.032 240);border-radius:22px;padding:20px;display:flex;flex-direction:column;gap:11px;box-shadow:0 2px 10px rgba(30,58,84,0.05);">
-              <div style="font-weight:700;font-size:17px;color:oklch(26% 0.05 250);">Enjoying Bloom?</div>
+              <div style="font-weight:700;font-size:17px;color:oklch(26% 0.05 250);">Enjoying HRT Daily?</div>
               <div style="font-size:15px;color:oklch(45% 0.04 246);line-height:1.55;">A short review helps other people on HRT find the app — it takes about a minute.</div>
               <div style="display:flex;gap:10px;">
                 <a href="{{ reviewUrl }}" target="_blank" onClick="{{ reviewDone }}" style="text-decoration:none;background:oklch(47% 0.125 245);color:#FFF;font-weight:700;font-size:14px;padding:11px 17px;border-radius:12px;">Leave a review</a>
@@ -118,17 +129,15 @@
       <!-- MORE -->
       <sc-if value="{{ showMore }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex;flex-direction:column;gap:18px;">
+          <button onClick="{{ goHome }}" style="border:none;background:none;font-family:'Newsreader',serif;font-size:15px;font-weight:700;letter-spacing:0.14em;color:oklch(47% 0.125 245);text-transform:uppercase;cursor:pointer;padding:0;align-self:flex-start;">HRT Daily</button>
           <div style="display:flex;flex-direction:column;gap:5px;">
             <div style="font-family:'Newsreader',serif;font-size:26px;font-weight:700;color:oklch(26% 0.05 250);">More</div>
-            <div style="font-size:16px;color:oklch(48% 0.038 246);">Install Bloom, check in daily, and help others find it.</div>
+            <div style="font-size:16px;color:oklch(48% 0.038 246);">Install HRT Daily, check in daily, and help others find it.</div>
           </div>
-          <button onClick="{{ goCheckin }}" style="border:none;background:oklch(93% 0.03 268);border-radius:22px;padding:20px;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left;" style-hover="background:oklch(90% 0.036 268);">
-            <div style="flex:1;display:flex;flex-direction:column;gap:3px;">
-              <div style="font-weight:700;font-size:17px;color:oklch(33% 0.045 248);">{{ checkinPrompt }}</div>
-              <div style="font-size:14px;color:oklch(48% 0.038 246);">Symptoms, mood & a little self-care</div>
-            </div>
-            <div style="font-size:19px;color:oklch(47% 0.125 245);font-weight:700;">→</div>
-          </button>
+          <div style="background:#FFFFFF;border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:8px;box-shadow:0 2px 10px rgba(30,58,84,0.05);">
+            <div style="font-weight:700;font-size:16px;color:oklch(26% 0.05 250);">How it works</div>
+            <div style="font-size:15px;color:oklch(48% 0.038 246);line-height:1.55;">Add what you take and how often — we'll keep track of when each dose is due. Start from a common option or add your own.</div>
+          </div>
           <button onClick="{{ toggleInstallHelp }}" style="border:1.5px solid oklch(90% 0.022 245);background:#FFFFFF;border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:12px;cursor:pointer;text-align:left;" style-hover="background:oklch(98.2% 0.008 245);">
             <div style="width:38px;height:38px;border-radius:12px;background:oklch(93.5% 0.03 240);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:oklch(47% 0.125 245);">↓</div>
             <div style="flex:1;font-weight:700;font-size:16px;color:oklch(26% 0.05 250);">Install this app on your device</div>
@@ -155,7 +164,7 @@
           <a href="{{ reviewUrl }}" target="_blank" style="text-decoration:none;border:1.5px solid oklch(90% 0.022 245);background:#FFFFFF;border-radius:20px;padding:16px 18px;display:flex;align-items:center;gap:12px;" style-hover="background:oklch(98.2% 0.008 245);">
             <div style="width:38px;height:38px;border-radius:12px;background:oklch(93.5% 0.03 240);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:15px;color:oklch(47% 0.125 245);">★</div>
             <div style="flex:1;display:flex;flex-direction:column;gap:2px;">
-              <div style="font-weight:700;font-size:16px;color:oklch(26% 0.05 250);">Love Bloom? Leave a review</div>
+              <div style="font-weight:700;font-size:16px;color:oklch(26% 0.05 250);">Love HRT Daily? Leave a review</div>
               <div style="font-size:13px;color:oklch(48% 0.038 246);">It helps others on HRT find the app</div>
             </div>
             <div style="font-size:16px;color:oklch(47% 0.125 245);font-weight:700;">→</div>
@@ -166,6 +175,7 @@
       <!-- CALENDAR -->
       <sc-if value="{{ showCalendar }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex;flex-direction:column;gap:18px;">
+          <button onClick="{{ goHome }}" style="border:none;background:none;font-family:'Newsreader',serif;font-size:15px;font-weight:700;letter-spacing:0.14em;color:oklch(47% 0.125 245);text-transform:uppercase;cursor:pointer;padding:0;align-self:flex-start;">HRT Daily</button>
           <div style="display:flex;flex-direction:column;gap:5px;">
             <div style="font-family:'Newsreader',serif;font-size:26px;font-weight:700;color:oklch(26% 0.05 250);">Calendar</div>
             <div style="font-size:16px;color:oklch(48% 0.038 246);">Logged doses, your monthly plan, and what's due — each treatment in its own colour.</div>
@@ -228,12 +238,13 @@
         </div>
       </sc-if>
 
-      <!-- CHECK-IN -->
-      <sc-if value="{{ showCheckin }}" hint-placeholder-val="{{ false }}">
+      <!-- JOURNAL -->
+      <sc-if value="{{ showJournal }}" hint-placeholder-val="{{ false }}">
         <div style="display:flex;flex-direction:column;gap:24px;">
+          <button onClick="{{ goHome }}" style="border:none;background:none;font-family:'Newsreader',serif;font-size:15px;font-weight:700;letter-spacing:0.14em;color:oklch(47% 0.125 245);text-transform:uppercase;cursor:pointer;padding:0;align-self:flex-start;">HRT Daily</button>
           <div style="display:flex;flex-direction:column;gap:5px;">
-            <div style="font-family:'Newsreader',serif;font-size:26px;font-weight:700;color:oklch(26% 0.05 250);">Daily check-in</div>
-            <div style="font-size:16px;color:oklch(48% 0.038 246);">A quick record of how today felt — over weeks, it shows whether your treatment is working for you.</div>
+            <div style="font-family:'Newsreader',serif;font-size:26px;font-weight:700;color:oklch(26% 0.05 250);">Journal</div>
+            <div style="font-size:16px;color:oklch(48% 0.038 246);">A quiet place to note how you're doing.</div>
           </div>
 
           <div style="background:oklch(93.4% 0.028 268);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:7px;">
@@ -241,81 +252,38 @@
             <div style="font-family:'Newsreader',serif;font-size:18px;font-weight:600;color:oklch(33% 0.045 248);line-height:1.5;">{{ quote }}</div>
           </div>
 
-          <div style="display:flex;flex-direction:column;gap:11px;">
-            <div style="font-weight:700;font-size:16px;color:oklch(26% 0.05 250);padding-left:4px;">Symptoms today</div>
-            <sc-for list="{{ symRows }}" as="s" hint-placeholder-count="6">
-              <div style="background:#FFFFFF;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:11px;box-shadow:0 2px 10px rgba(30,58,84,0.05);">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <div style="flex:1;font-weight:700;font-size:15px;color:oklch(26% 0.05 250);">{{ s.label }}</div>
-                  <div style="display:flex;gap:3px;">
-                    <sc-for list="{{ s.week }}" as="d" hint-placeholder-count="7">
-                      <div style="width:9px;height:9px;border-radius:3px;background:{{ d.color }};"></div>
-                    </sc-for>
-                  </div>
-                </div>
-                <div style="display:flex;gap:7px;">
-                  <sc-for list="{{ s.levels }}" as="l" hint-placeholder-count="4">
-                    <button onClick="{{ l.onTap }}" style="flex:1;border:1.5px solid {{ l.border }};background:{{ l.bg }};color:{{ l.fg }};font-weight:600;font-size:13px;padding:9px 4px;border-radius:10px;cursor:pointer;">{{ l.label }}</button>
-                  </sc-for>
-                </div>
-              </div>
-            </sc-for>
-          </div>
-
-          <div style="display:flex;flex-direction:column;gap:11px;">
-            <div style="display:flex;align-items:baseline;gap:8px;padding-left:4px;">
-              <div style="font-weight:700;font-size:16px;color:oklch(26% 0.05 250);">Self-care today</div>
-              <div style="font-size:13px;color:oklch(52% 0.035 246);">{{ careCount }}</div>
-            </div>
-            <div style="background:#FFFFFF;border-radius:18px;padding:9px;display:flex;flex-direction:column;box-shadow:0 2px 10px rgba(30,58,84,0.05);">
-              <sc-for list="{{ careItems }}" as="c" hint-placeholder-count="6">
-                <button onClick="{{ c.onTap }}" style="border:none;background:none;display:flex;align-items:center;gap:13px;padding:12px 11px;cursor:pointer;text-align:left;border-radius:12px;" style-hover="background:oklch(98.2% 0.008 245);">
-                  <div style="width:26px;height:26px;border-radius:8px;border:2px solid {{ c.boxBorder }};background:{{ c.boxBg }};display:flex;align-items:center;justify-content:center;color:#FFF;font-size:14px;font-weight:700;">{{ c.check }}</div>
-                  <div style="flex:1;font-size:15px;font-weight:600;color:{{ c.fg }};">{{ c.label }}</div>
-                  <div style="font-size:13px;color:oklch(52% 0.035 246);">{{ c.hint }}</div>
-                </button>
-              </sc-for>
-            </div>
-          </div>
-
-          <div style="background:#FFFFFF;border-radius:18px;padding:16px 18px;display:flex;flex-direction:column;gap:9px;box-shadow:0 2px 10px rgba(30,58,84,0.05);">
-            <div style="font-weight:700;font-size:16px;color:oklch(26% 0.05 250);">Note for today</div>
-            <textarea value="{{ symNote }}" onChange="{{ onSymNote }}" placeholder="Anything worth remembering…" style="border:1.5px solid oklch(90% 0.022 245);border-radius:12px;padding:11px 13px;font-size:15px;min-height:68px;resize:vertical;outline:none;color:oklch(33% 0.045 248);background:oklch(98.2% 0.008 245);"></textarea>
-          </div>
-          <div style="font-size:13px;color:oklch(52% 0.035 246);text-align:center;">Saved automatically · dots show your last 7 days</div>
-        </div>
-      </sc-if>
-
-      <!-- JOURNAL -->
-      <sc-if value="{{ showJournal }}" hint-placeholder-val="{{ false }}">
-        <div style="display:flex;flex-direction:column;gap:24px;">
-          <div style="display:flex;flex-direction:column;gap:5px;">
-            <div style="font-family:'Newsreader',serif;font-size:26px;font-weight:700;color:oklch(26% 0.05 250);">Journal</div>
-            <div style="font-size:16px;color:oklch(48% 0.038 246);">Changes, milestones, and moments along the way.</div>
-          </div>
-          <div style="background:#FFFFFF;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:11px;box-shadow:0 2px 10px rgba(30,58,84,0.05);">
-            <textarea value="{{ journalDraft }}" onChange="{{ onJournalDraft }}" placeholder="What's changed lately?" style="border:1.5px solid oklch(90% 0.022 245);border-radius:12px;padding:11px 13px;font-size:15px;min-height:76px;resize:vertical;outline:none;color:oklch(33% 0.045 248);background:oklch(98.2% 0.008 245);"></textarea>
+          <div style="background:#FFFFFF;border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:12px;box-shadow:0 2px 10px rgba(30,58,84,0.05);">
+            <div style="font-size:14px;color:oklch(48% 0.038 246);line-height:1.5;">Note your mood, self-care, exercise, physical changes — anything worth remembering about today.</div>
+            <textarea value="{{ journalDraft }}" onChange="{{ onJournalDraft }}" placeholder="What's on your mind today?" style="border:1.5px solid oklch(90% 0.022 245);border-radius:12px;padding:11px 13px;font-size:15px;min-height:100px;resize:vertical;outline:none;color:oklch(33% 0.045 248);background:oklch(98.2% 0.008 245);"></textarea>
             <div style="display:flex;align-items:center;gap:10px;">
               <button onClick="{{ toggleMilestone }}" style="border:1.5px solid {{ milestoneBorder }};background:{{ milestoneBg }};color:{{ milestoneFg }};font-weight:700;font-size:14px;padding:9px 15px;border-radius:99px;cursor:pointer;">✦ Milestone</button>
               <div style="flex:1;"></div>
               <button onClick="{{ addJournal }}" style="border:none;background:oklch(47% 0.125 245);color:#FFF;font-weight:700;font-size:15px;padding:11px 22px;border-radius:12px;cursor:pointer;" style-hover="filter:brightness(1.08);">Save entry</button>
             </div>
           </div>
-          <div style="display:flex;flex-direction:column;gap:11px;">
-            <sc-for list="{{ journalItems }}" as="j" hint-placeholder-count="2">
-              <div style="background:{{ j.bg }};border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(30,58,84,0.05);border:1.5px solid {{ j.border }};">
-                <div style="display:flex;align-items:center;gap:8px;">
-                  <div style="font-size:13px;font-weight:700;color:oklch(52% 0.035 246);">{{ j.date }}</div>
-                  <sc-if value="{{ j.milestone }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;font-weight:700;color:oklch(47% 0.125 245);background:oklch(93.5% 0.03 240);padding:3px 10px;border-radius:99px;">✦ MILESTONE</div></sc-if>
-                  <div style="flex:1;"></div>
-                  <button onClick="{{ j.onDelete }}" style="border:none;background:none;color:oklch(60% 0.03 246);font-size:14px;cursor:pointer;padding:2px 4px;" style-hover="color:oklch(47% 0.125 245);">✕</button>
+
+          <button onClick="{{ toggleEntries }}" style="border:1.5px solid oklch(90% 0.022 245);background:#FFFFFF;border-radius:18px;padding:16px 18px;display:flex;align-items:center;gap:10px;cursor:pointer;text-align:left;" style-hover="background:oklch(98.2% 0.008 245);">
+            <div style="flex:1;font-weight:700;font-size:16px;color:oklch(26% 0.05 250);">{{ entriesToggleLabel }}</div>
+            <div style="font-size:16px;color:oklch(47% 0.125 245);font-weight:700;">{{ entriesChevron }}</div>
+          </button>
+
+          <sc-if value="{{ showEntries }}" hint-placeholder-val="{{ false }}">
+            <div style="display:flex;flex-direction:column;gap:11px;">
+              <sc-for list="{{ journalItems }}" as="j" hint-placeholder-count="2">
+                <div style="background:{{ j.bg }};border-radius:18px;padding:18px;display:flex;flex-direction:column;gap:7px;box-shadow:0 2px 10px rgba(30,58,84,0.05);border:1.5px solid {{ j.border }};">
+                  <div style="display:flex;align-items:center;gap:8px;">
+                    <div style="font-size:13px;font-weight:700;color:oklch(52% 0.035 246);">{{ j.date }}</div>
+                    <sc-if value="{{ j.milestone }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;font-weight:700;color:oklch(47% 0.125 245);background:oklch(93.5% 0.03 240);padding:3px 10px;border-radius:99px;">✦ MILESTONE</div></sc-if>
+                    <div style="flex:1;"></div>
+                    <button onClick="{{ j.onDelete }}" style="border:none;background:none;color:oklch(60% 0.03 246);font-size:14px;cursor:pointer;padding:2px 4px;" style-hover="color:oklch(47% 0.125 245);">✕</button>
+                  </div>
+                  <div style="font-size:15px;color:oklch(33% 0.045 248);line-height:1.58;white-space:pre-wrap;">{{ j.text }}</div>
                 </div>
-                <div style="font-size:15px;color:oklch(33% 0.045 248);line-height:1.58;white-space:pre-wrap;">{{ j.text }}</div>
-              </div>
-            </sc-for>
-          </div>
-          <sc-if value="{{ noJournal }}" hint-placeholder-val="{{ false }}">
-            <div style="text-align:center;font-size:14px;color:oklch(52% 0.035 246);padding:20px;">No entries yet — your story starts here.</div>
+              </sc-for>
+              <sc-if value="{{ noJournal }}" hint-placeholder-val="{{ false }}">
+                <div style="text-align:center;font-size:14px;color:oklch(52% 0.035 246);padding:20px;">No entries yet — your story starts here.</div>
+              </sc-if>
+            </div>
           </sc-if>
         </div>
       </sc-if>
@@ -324,17 +292,19 @@
 
     <!-- ADD / EDIT MODAL -->
     <sc-if value="{{ showAdd }}" hint-placeholder-val="{{ false }}">
-      <div style="position:fixed;inset:0;background:rgba(22,40,58,0.35);display:flex;align-items:flex-end;justify-content:center;z-index:50;">
-        <div style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:oklch(98.6% 0.007 245);border-radius:24px 24px 0 0;padding:26px 22px 34px 22px;display:flex;flex-direction:column;gap:16px;">
+      <div onClick="{{ closeAdd }}" style="position:fixed;inset:0;background:rgba(22,40,58,0.35);display:flex;align-items:flex-end;justify-content:center;z-index:50;">
+        <div onClick="{{ stopClick }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:oklch(98.6% 0.007 245);border-radius:24px 24px 0 0;padding:26px 22px 34px 22px;display:flex;flex-direction:column;gap:16px;">
+          <button onClick="{{ closeAdd }}" style="border:1.5px solid oklch(90% 0.022 245);background:oklch(98.2% 0.008 245);color:oklch(47% 0.125 245);font-weight:700;font-size:15px;cursor:pointer;padding:9px 16px 9px 12px;border-radius:99px;display:flex;align-items:center;gap:6px;align-self:flex-start;" style-hover="background:#FFF;border-color:oklch(78% 0.05 245);">
+            <span style="font-size:17px;">←</span>Back to Today
+          </button>
           <div style="display:flex;align-items:center;">
             <div style="flex:1;font-family:'Newsreader',serif;font-size:22px;font-weight:700;color:oklch(26% 0.05 250);">{{ modalTitle }}</div>
-            <button onClick="{{ closeAdd }}" style="border:none;background:none;color:oklch(48% 0.038 246);font-size:19px;cursor:pointer;">✕</button>
           </div>
           <div style="display:flex;flex-direction:column;gap:7px;">
             <div style="font-size:14px;font-weight:700;color:oklch(48% 0.038 246);">Common options — tap to fill</div>
             <div style="display:flex;gap:7px;flex-wrap:wrap;">
               <sc-for list="{{ nameSuggestions }}" as="o" hint-placeholder-count="5">
-                <button onClick="{{ o.onTap }}" style="border:1.5px solid oklch(90% 0.022 245);background:oklch(98.2% 0.008 245);color:oklch(33% 0.045 248);font-weight:600;font-size:14px;padding:9px 14px;border-radius:99px;cursor:pointer;" style-hover="border-color:oklch(78% 0.05 245);background:#FFF;">{{ o.label }}</button>
+                <button onClick="{{ o.onTap }}" style="border:1.5px solid {{ o.border }};background:{{ o.bg }};color:{{ o.fg }};font-weight:600;font-size:14px;padding:9px 14px;border-radius:99px;cursor:pointer;" style-hover="border-color:oklch(70% 0.13 340);">{{ o.label }}</button>
               </sc-for>
             </div>
           </div>
@@ -373,15 +343,17 @@
 
     <!-- PLAN DATES MODAL -->
     <sc-if value="{{ showPlanner }}" hint-placeholder-val="{{ false }}">
-      <div style="position:fixed;inset:0;background:rgba(22,40,58,0.35);display:flex;align-items:flex-end;justify-content:center;z-index:50;">
-        <div style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:oklch(98.6% 0.007 245);border-radius:24px 24px 0 0;padding:26px 22px 34px 22px;display:flex;flex-direction:column;gap:16px;">
+      <div onClick="{{ closePlanner }}" style="position:fixed;inset:0;background:rgba(22,40,58,0.35);display:flex;align-items:flex-end;justify-content:center;z-index:50;">
+        <div onClick="{{ stopClick }}" style="width:100%;max-width:440px;max-height:88vh;overflow-y:auto;background:oklch(98.6% 0.007 245);border-radius:24px 24px 0 0;padding:26px 22px 34px 22px;display:flex;flex-direction:column;gap:16px;">
+          <button onClick="{{ closePlanner }}" style="border:1.5px solid oklch(90% 0.022 245);background:oklch(98.2% 0.008 245);color:oklch(47% 0.125 245);font-weight:700;font-size:15px;cursor:pointer;padding:9px 16px 9px 12px;border-radius:99px;display:flex;align-items:center;gap:6px;align-self:flex-start;" style-hover="background:#FFF;border-color:oklch(78% 0.05 245);">
+            <span style="font-size:17px;">←</span>Back to Today
+          </button>
           <div style="display:flex;align-items:center;gap:10px;">
             <div style="width:15px;height:15px;border-radius:5px;background:{{ plannerDeep }};"></div>
             <div style="flex:1;display:flex;flex-direction:column;">
               <div style="font-family:'Newsreader',serif;font-size:20px;font-weight:700;color:oklch(26% 0.05 250);">{{ plannerName }}</div>
               <div style="font-size:14px;color:oklch(48% 0.038 246);">Tap dates to plan them — tap again to remove. Pick as many as you like.</div>
             </div>
-            <button onClick="{{ closePlanner }}" style="border:none;background:none;color:oklch(48% 0.038 246);font-size:19px;cursor:pointer;">✕</button>
           </div>
           <div style="background:#FFFFFF;border-radius:18px;padding:16px;display:flex;flex-direction:column;gap:11px;">
             <div style="display:flex;align-items:center;gap:8px;">
@@ -415,9 +387,9 @@
     <!-- BOTTOM NAV -->
     <div style="position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:440px;background:rgba(246,249,252,0.96);border-top:1.5px solid oklch(90% 0.022 245);display:flex;flex-direction:row;padding-top:10px;padding-bottom:14px;padding-left:8px;padding-right:8px;z-index:40;">
       <sc-for list="{{ navItems }}" as="n" hint-placeholder-count="5">
-        <button onClick="{{ n.onTap }}" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:5px;padding-top:7px;padding-bottom:7px;">
-          <div style="width:28px;height:4px;border-radius:99px;background:{{ n.dot }};"></div>
-          <div style="font-size:14px;font-weight:700;color:{{ n.color }};">{{ n.label }}</div>
+        <button onClick="{{ n.onTap }}" style="flex:1;border:none;background:none;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:6px;padding-top:8px;padding-bottom:8px;">
+          <div style="width:30px;height:4px;border-radius:99px;background:{{ n.dot }};"></div>
+          <div style="font-size:16px;font-weight:700;color:{{ n.color }};text-shadow:0 1px 1px rgba(30,58,84,0.12);">{{ n.label }}</div>
         </button>
       </sc-for>
     </div>
@@ -440,10 +412,6 @@ class Component extends DCLogic {
   ];
   METHODS = { patch: 'Patch', pill: 'Pill', gel: 'Gel', pellet: 'Pellet' };
   METHOD_DEFAULT_COLOR = { patch: 0, pill: 1, gel: 2, pellet: 3 };
-  SYMPTOMS = ['Hot flashes', 'Night sweats', 'Sleep quality', 'Mood', 'Anxiety', 'Energy', 'Brain fog', 'Joint aches', 'Vaginal dryness'];
-  LEVELS = ['None', 'Mild', 'Moderate', 'Severe'];
-  LEVEL_COLORS = ['oklch(86% 0.04 245)', 'oklch(74% 0.08 255)', 'oklch(58% 0.13 290)', 'oklch(45% 0.16 320)'];
-  LEVEL_FG = ['oklch(30% 0.04 248)', 'oklch(30% 0.04 248)', '#FFF', '#FFF'];
   PRESETS = [
     { name: 'Estradiol patch', method: 'patch', interval: 3.5, freq: 'twice weekly' },
     { name: 'Progesterone capsule', method: 'pill', interval: 1, freq: 'nightly' },
@@ -453,14 +421,6 @@ class Component extends DCLogic {
     { name: 'Testosterone cream', method: 'gel', interval: 1, freq: 'daily' }
   ];
   FREQS = [ { label: 'Daily', v: 1 }, { label: 'Twice weekly', v: 3.5 }, { label: 'Weekly', v: 7 }, { label: 'Every 2 weeks', v: 14 }, { label: 'Every 12 weeks', v: 84 } ];
-  CARE = [
-    { label: 'Gentle walk', hint: '10–20 min' },
-    { label: 'Meditation or breathing', hint: '5 min' },
-    { label: 'Drank enough water', hint: 'through the day' },
-    { label: 'Stretch or yoga', hint: 'even a little' },
-    { label: 'Time outdoors', hint: 'daylight helps' },
-    { label: 'Moment just for you', hint: 'tea, book, bath…' }
-  ];
   QUOTES = [
     'Be gentle with yourself — your body is doing important work.',
     'Small steps, taken kindly, still carry you forward.',
@@ -474,12 +434,12 @@ class Component extends DCLogic {
   componentDidMount() {
     window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); this.setState({ deferredPrompt: e }); });
     try {
-      const raw = localStorage.getItem('hrt-tracker-v1');
+      const raw = localStorage.getItem('hrt-daily-v1');
       if (raw) this.setState({ data: Object.assign({ meds: [], logs: [], symptoms: {}, journal: [], care: {} }, JSON.parse(raw)), loaded: true });
       else this.setState({ loaded: true });
     } catch (e) { this.setState({ loaded: true }); }
   }
-  save(data) { localStorage.setItem('hrt-tracker-v1', JSON.stringify(data)); this.setState({ data }); }
+  save(data) { localStorage.setItem('hrt-daily-v1', JSON.stringify(data)); this.setState({ data }); }
   colorOf(med) { return this.COLORS[med.colorIdx !== undefined ? med.colorIdx : (this.METHOD_DEFAULT_COLOR[med.method] || 0)]; }
   nextColorIdx(meds) {
     const used = meds.map(m => m.colorIdx !== undefined ? m.colorIdx : (this.METHOD_DEFAULT_COLOR[m.method] || 0));
@@ -510,8 +470,6 @@ class Component extends DCLogic {
 
   renderVals() {
     const { data, view, form } = this.state;
-    const hour = new Date().getHours();
-    const greeting = hour < 12 ? 'Good morning' : hour < 18 ? 'Good afternoon' : 'Good evening';
     const todayLabel = new Date().toLocaleDateString([], { weekday: 'long', month: 'long', day: 'numeric' });
     const todayKey = this.dayKey(new Date());
 
@@ -534,7 +492,7 @@ class Component extends DCLogic {
       return {
         name: med.name, sub: (this.METHODS[med.method] || 'Patch') + ' · ' + this.intervalLabel(med.interval) + ' · ' + C.name.toLowerCase(),
         tint: C.tint, deep: C.deep, initials: (this.METHODS[med.method] || 'Pa').slice(0, 2).toUpperCase(),
-        due, badgeBg, badgeFg, lastLabel, logLabel: verb,
+        due, badgeBg, badgeFg, lastLabel, logLabel: verb, hasLast: !!last, noLast: !last,
         onLog: () => this.save(Object.assign({}, data, { logs: [...data.logs, { id: Date.now(), medId: med.id, ts: Date.now() }] })),
         plannedCount: (med.planned || []).length,
         onEdit: () => this.setState({ showAdd: true, editingId: med.id, formError: false, form: { name: med.name, method: med.method, interval: med.interval, colorIdx: med.colorIdx !== undefined ? med.colorIdx : (this.METHOD_DEFAULT_COLOR[med.method] || 0) } }),
@@ -616,42 +574,6 @@ class Component extends DCLogic {
       };
     }
 
-    const todaySym = data.symptoms[todayKey] || {};
-    const symRows = this.SYMPTOMS.map(name => {
-      const cur = todaySym[name];
-      return {
-        label: name,
-        levels: this.LEVELS.map((lv, i) => {
-          const on = cur === i;
-          return {
-            label: lv, bg: on ? this.LEVEL_COLORS[i] : 'oklch(98.2% 0.008 245)', border: on ? this.LEVEL_COLORS[i] : 'oklch(90% 0.022 245)', fg: on ? this.LEVEL_FG[i] : 'oklch(48% 0.038 246)',
-            onTap: () => {
-              const day = Object.assign({}, data.symptoms[todayKey]);
-              if (day[name] === i) delete day[name]; else day[name] = i;
-              this.save(Object.assign({}, data, { symptoms: Object.assign({}, data.symptoms, { [todayKey]: day }) }));
-            }
-          };
-        }),
-        week: Array.from({ length: 7 }, (_, k) => {
-          const d = new Date(); d.setDate(d.getDate() - (6 - k));
-          const v = (data.symptoms[this.dayKey(d)] || {})[name];
-          return { color: v === undefined ? 'oklch(95.5% 0.008 245)' : this.LEVEL_COLORS[v] };
-        })
-      };
-    });
-
-    const careToday = data.care[todayKey] || [];
-    const careItems = this.CARE.map(c => {
-      const on = careToday.includes(c.label);
-      return {
-        label: c.label, hint: c.hint, check: on ? '✓' : '',
-        boxBg: on ? 'oklch(50% 0.1 165)' : 'oklch(98.2% 0.008 245)', boxBorder: on ? 'oklch(50% 0.1 165)' : 'oklch(87% 0.026 245)', fg: on ? 'oklch(26% 0.05 250)' : 'oklch(42% 0.042 246)',
-        onTap: () => {
-          const next = on ? careToday.filter(x => x !== c.label) : [...careToday, c.label];
-          this.save(Object.assign({}, data, { care: Object.assign({}, data.care, { [todayKey]: next }) }));
-        }
-      };
-    });
     const dayOfYear = Math.floor((Date.now() - new Date(new Date().getFullYear(), 0, 0)) / 86400000);
 
     const journalItems = [...data.journal].sort((a, b) => b.ts - a.ts).map(j => ({
@@ -667,10 +589,10 @@ class Component extends DCLogic {
         onDelete: () => { if (confirm('Delete this dose entry?')) this.save(Object.assign({}, data, { logs: data.logs.filter(x => x.id !== l.id) })); } };
     });
 
-    const tabs = [ ['today', 'Today'], ['calendar', 'Calendar'], ['checkin', 'Check-in'], ['journal', 'Journal'], ['more', 'More'] ];
+    const tabs = [ ['today', 'Today'], ['calendar', 'Calendar'], ['journal', 'Journal'], ['more', 'More'] ];
     const navItems = tabs.map(([id, label]) => ({
       label, color: view === id ? 'oklch(47% 0.125 245)' : 'oklch(52% 0.035 246)', dot: view === id ? 'oklch(47% 0.125 245)' : 'transparent',
-      onTap: () => this.setState({ view: id })
+      onTap: () => this.setState({ view: id, prevView: view })
     }));
 
     const pick = (opts, cur, key) => opts.map(o => ({
@@ -678,13 +600,13 @@ class Component extends DCLogic {
       onTap: () => this.setState({ form: Object.assign({}, form, { [key]: o.v }) })
     }));
 
-    const checkedCount = Object.keys(todaySym).filter(k => k !== '$note').length;
     const editing = this.state.editingId !== null;
     return Object.assign({
-      greeting, todayLabel, navItems,
-      showToday: view === 'today', showCalendar: view === 'calendar', showCheckin: view === 'checkin', showJournal: view === 'journal', showMore: view === 'more',
+      todayLabel, navItems,
+      goHome: () => this.setState({ view: 'today' }),
+      showToday: view === 'today', showCalendar: view === 'calendar', showJournal: view === 'journal', showMore: view === 'more',
       hasMeds: data.meds.length > 0, noMeds: this.state.loaded && data.meds.length === 0,
-      medCards, symRows, journalItems, historyItems, careItems, legendItems,
+      medCards, journalItems, historyItems, legendItems,
       calTitle, calWeeks,
       calWeekdays: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(w => ({ label: w })),
       calPrev: () => this.setState({ calOffset: this.state.calOffset - 1 }),
@@ -693,14 +615,15 @@ class Component extends DCLogic {
       showPlanner: !!plannerMed,
       closePlanner: () => this.setState({ plannerId: null }),
       quote: this.QUOTES[dayOfYear % this.QUOTES.length],
-      careCount: careToday.length > 0 ? careToday.length + ' of ' + this.CARE.length + ' — lovely' : 'tap what you did',
       noJournal: data.journal.length === 0, noHistory: data.logs.length === 0,
-      checkinPrompt: checkedCount > 0 ? 'Update today\u2019s check-in' : 'How are you feeling today?',
+      showEntries: !!this.state.showEntries,
+      entriesChevron: this.state.showEntries ? '▴' : '▾',
+      entriesToggleLabel: data.journal.length === 0 ? 'View entries' : 'View entries (' + data.journal.length + ')',
+      toggleEntries: () => this.setState({ showEntries: !this.state.showEntries }),
       presets: this.PRESETS.slice(0, 4).map(p => ({
         name: p.name, freq: p.freq, deep: this.COLORS[this.METHOD_DEFAULT_COLOR[p.method]].deep,
         onAdd: () => this.save(Object.assign({}, data, { meds: [...data.meds, { id: Date.now(), name: p.name, method: p.method, interval: p.interval, colorIdx: this.nextColorIdx(data.meds), planned: [] }] }))
       })),
-      goCheckin: () => this.setState({ view: 'checkin' }),
       showInstallHelp: !!this.state.showInstallHelp,
       installChevron: this.state.showInstallHelp ? '▴' : '▾',
       toggleInstallHelp: () => this.setState({ showInstallHelp: !this.state.showInstallHelp }),
@@ -724,15 +647,10 @@ class Component extends DCLogic {
           { n: '2', text: 'Go to the File menu → "Add to Dock…" (or click the Share button → Add to Dock).' },
           { n: '3', text: 'Click Add — it appears in your Dock like a real app.' } ] }
       ],
-      showReviewAsk: view === 'today' && data.logs.length >= 8 && !localStorage.getItem('bloom.reviewed') && Date.now() - Number(localStorage.getItem('bloom.reviewSnooze') || 0) > 14 * 86400000,
+      showReviewAsk: view === 'today' && data.logs.length >= 8 && !localStorage.getItem('hrtdaily.reviewed') && Date.now() - Number(localStorage.getItem('hrtdaily.reviewSnooze') || 0) > 14 * 86400000,
       reviewUrl: this.props.reviewUrl ?? 'https://payhip.com/YOUR-PRODUCT',
-      reviewDone: () => { localStorage.setItem('bloom.reviewed', '1'); this.forceUpdate(); },
-      reviewLater: () => { localStorage.setItem('bloom.reviewSnooze', String(Date.now())); this.forceUpdate(); },
-      symNote: todaySym.$note || '',
-      onSymNote: e => {
-        const day = Object.assign({}, data.symptoms[todayKey], { $note: e.target.value });
-        this.save(Object.assign({}, data, { symptoms: Object.assign({}, data.symptoms, { [todayKey]: day }) }));
-      },
+      reviewDone: () => { localStorage.setItem('hrtdaily.reviewed', '1'); this.forceUpdate(); },
+      reviewLater: () => { localStorage.setItem('hrtdaily.reviewSnooze', String(Date.now())); this.forceUpdate(); },
       journalDraft: this.state.journalDraft,
       onJournalDraft: e => this.setState({ journalDraft: e.target.value }),
       toggleMilestone: () => this.setState({ milestone: !this.state.milestone }),
@@ -750,10 +668,14 @@ class Component extends DCLogic {
       closeAdd: () => this.setState({ showAdd: false, editingId: null, formError: false }),
       formName: form.name,
       onFormName: e => this.setState({ form: Object.assign({}, form, { name: e.target.value }), formError: false }),
-      nameSuggestions: this.PRESETS.map(p => ({
-        label: p.name,
-        onTap: () => this.setState({ form: Object.assign({}, form, { name: p.name, method: p.method, interval: p.interval }), formError: false })
-      })),
+      stopClick: e => e.stopPropagation(),
+      nameSuggestions: this.PRESETS.map(p => {
+        const on = form.name === p.name;
+        return {
+          label: p.name, bg: on ? 'oklch(52% 0.14 340)' : 'oklch(98.2% 0.008 245)', border: on ? 'oklch(52% 0.14 340)' : 'oklch(90% 0.022 245)', fg: on ? '#FFF' : 'oklch(33% 0.045 248)',
+          onTap: () => this.setState({ form: Object.assign({}, form, { name: p.name, method: p.method, interval: p.interval }), formError: false })
+        };
+      }),
       methodOpts: pick(Object.keys(this.METHODS).map(k => ({ label: this.METHODS[k], v: k })), form.method, 'method'),
       freqOpts: pick(this.FREQS, form.interval, 'interval'),
       colorOpts: this.COLORS.map((c, i) => ({
@@ -767,7 +689,7 @@ class Component extends DCLogic {
         if (editing) meds = data.meds.map(m => m.id === this.state.editingId ? Object.assign({}, m, { name, method: form.method, interval: form.interval, colorIdx: form.colorIdx }) : m);
         else meds = [...data.meds, { id: Date.now(), name, method: form.method, interval: form.interval, colorIdx: form.colorIdx, planned: [] }];
         this.save(Object.assign({}, data, { meds }));
-        this.setState({ showAdd: false, editingId: null, view: 'plan' });
+        this.setState({ showAdd: false, editingId: null, view: 'today' });
       }
     }, plannerVals);
   }

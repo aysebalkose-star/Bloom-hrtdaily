@@ -1,4 +1,4 @@
-# Bloom — Menopause HRT Tracker
+# HRT Daily — Menopause HRT Tracker
 
 A gentle, private, offline-capable PWA for tracking menopause & perimenopause
 hormone replacement therapy — oestrogen/progesterone/testosterone doses, monthly
@@ -75,8 +75,8 @@ site — not when opening the file directly.
 ## Updating
 
 Push to GitHub → Vercel redeploys automatically. When you change any cached file,
-bump the cache name in `sw.js` (`bloom-v2` → `bloom-v3`) so installed users get
+bump the cache name in `sw.js` (`hrtdaily-v1` → `hrtdaily-v2`) so installed users get
 the new version.
 
 > ⚠ User data lives in each visitor's browser (localStorage). Deploys never touch it.
-> Bloom is a personal tracking tool, **not a medical device**, and gives no medical advice.
+> HRT Daily is a personal tracking tool, **not a medical device**, and gives no medical advice.

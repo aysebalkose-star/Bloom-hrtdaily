@@ -1,12 +1,12 @@
-# Bloom — Launch Checklist
+# HRT Daily — Launch Checklist
 
-A practical, do-this-in-order checklist to take Bloom from repo → live → first sales.
+A practical, do-this-in-order checklist to take HRT Daily from repo → live → first sales.
 
 ---
 
 ## Phase 1 · Go live (½ hour)
 
-- [ ] **Deploy to Vercel.** vercel.com → *Add New → Project* → import `Bloom-hrtdaily`.
+- [ ] **Deploy to Vercel.** vercel.com → *Add New → Project* → import `Bloom-hrtdaily` (your repo).
       Framework preset **Other**, no build command, no output dir → **Deploy**.
 - [ ] **Buy the domain** `hrtdaily.com` (Vercel → Project → Settings → Domains, or any registrar ~$11/yr).
 - [ ] **Connect the domain** — add `hrtdaily.com` **and** `www.hrtdaily.com`; follow Vercel's DNS steps.
@@ -81,5 +81,5 @@ A practical, do-this-in-order checklist to take Bloom from repo → live → fir
 | Real testimonials | `index.html` reviews section | ⏳ after first users |
 | App screenshot as og-image | `og-image.png` | ⏳ optional |
 
-> Reminder: Bloom is a personal tracking tool, **not a medical device**, and gives no medical advice.
+> Reminder: HRT Daily is a personal tracking tool, **not a medical device**, and gives no medical advice.
 > Keep that disclaimer on every page (it's already there) — it protects you and sets honest expectations.
