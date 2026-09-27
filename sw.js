@@ -1,5 +1,5 @@
-const CACHE = 'hrtdaily-v3';
-const ASSETS = ['./', './index.html', './app.html', './blog.html', './guide.html', './perimenopause-symptoms.html', './hrt-and-sleep.html', './which-hrt-patch-did-i-put-on.html', './support.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './og-image.png'];
+const CACHE = 'hrtdaily-v4';
+const ASSETS = ['./', './index.html', './app.html', './blog.html', './guide.html', './perimenopause-symptoms.html', './hrt-and-sleep.html', './which-hrt-patch-did-i-put-on.html', './support.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './og-image.png', './shots/screen1.png', './shots/screen2.png', './shots/screen3.png', './shots/screen4.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
