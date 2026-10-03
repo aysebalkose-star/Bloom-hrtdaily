@@ -433,13 +433,40 @@ class Component extends DCLogic {
 
   componentDidMount() {
     window.addEventListener('beforeinstallprompt', e => { e.preventDefault(); this.setState({ deferredPrompt: e }); });
+    const u = new URLSearchParams(location.search), P = this.props || {};
+    const q = { get: k => (P[k] != null ? String(P[k]) : u.get(k)) };
+    if (q.get('demo')) {
+      this.demo = true;
+      const D = 86400000, now = Date.now(), at = (daysAgo, h) => { const d = new Date(now - daysAgo * D); d.setHours(h, 12, 0, 0); return d.getTime(); };
+      const fut = n => this.dayKey(new Date(now + n * D));
+      const logs = []; let id = 1;
+      [1, 4, 8, 11, 15, 18, 22, 25].forEach(a => logs.push({ id: id++, medId: 1, ts: at(a, 8) }));
+      for (let a = 1; a <= 26; a++) logs.push({ id: id++, medId: 2, ts: at(a, 21) });
+      [0, 1, 2, 3, 5, 6, 7, 9, 10, 12, 13, 14].forEach(a => logs.push({ id: id++, medId: 3, ts: at(a, 7) }));
+      const data = {
+        meds: [
+          { id: 1, name: 'Estradiol patch', method: 'patch', interval: 3.5, colorIdx: 0, planned: [fut(2), fut(6), fut(9), fut(13)] },
+          { id: 2, name: 'Progesterone capsule', method: 'pill', interval: 1, colorIdx: 1, planned: [] },
+          { id: 3, name: 'Testosterone cream', method: 'gel', interval: 1, colorIdx: 7, planned: [] }
+        ],
+        logs, symptoms: {}, care: {},
+        journal: [
+          { ts: at(0, 9), text: 'Slept through the night for the first time in weeks. Walked 40 minutes and felt steady all morning.', milestone: true },
+          { ts: at(2, 20), text: 'Hot flushes eased to two today. Yoga in the evening, early night.', milestone: false },
+          { ts: at(5, 19), text: 'Bit foggy this afternoon. Drank more water, short walk helped.', milestone: false },
+          { ts: at(9, 18), text: 'Three months on HRT. Mood feels lighter and more like me.', milestone: true }
+        ]
+      };
+      this.setState({ data, loaded: true, view: q.get('view') || 'today', showEntries: q.get('entries') === '1', plannerId: q.get('planner') ? Number(q.get('planner')) : null, showAdd: q.get('add') === '1' });
+      return;
+    }
     try {
       const raw = localStorage.getItem('hrt-daily-v1');
       if (raw) this.setState({ data: Object.assign({ meds: [], logs: [], symptoms: {}, journal: [], care: {} }, JSON.parse(raw)), loaded: true });
       else this.setState({ loaded: true });
     } catch (e) { this.setState({ loaded: true }); }
   }
-  save(data) { localStorage.setItem('hrt-daily-v1', JSON.stringify(data)); this.setState({ data }); }
+  save(data) { if (this.demo) return this.setState({ data }); localStorage.setItem('hrt-daily-v1', JSON.stringify(data)); this.setState({ data }); }
   colorOf(med) { return this.COLORS[med.colorIdx !== undefined ? med.colorIdx : (this.METHOD_DEFAULT_COLOR[med.method] || 0)]; }
   nextColorIdx(meds) {
     const used = meds.map(m => m.colorIdx !== undefined ? m.colorIdx : (this.METHOD_DEFAULT_COLOR[m.method] || 0));
@@ -647,7 +674,7 @@ class Component extends DCLogic {
           { n: '2', text: 'Go to the File menu → "Add to Dock…" (or click the Share button → Add to Dock).' },
           { n: '3', text: 'Click Add — it appears in your Dock like a real app.' } ] }
       ],
-      showReviewAsk: view === 'today' && data.logs.length >= 8 && !localStorage.getItem('hrtdaily.reviewed') && Date.now() - Number(localStorage.getItem('hrtdaily.reviewSnooze') || 0) > 14 * 86400000,
+      showReviewAsk: !this.demo && view === 'today' && data.logs.length >= 8 && !localStorage.getItem('hrtdaily.reviewed') && Date.now() - Number(localStorage.getItem('hrtdaily.reviewSnooze') || 0) > 14 * 86400000,
       reviewUrl: this.props.reviewUrl ?? 'https://payhip.com/YOUR-PRODUCT',
       reviewDone: () => { localStorage.setItem('hrtdaily.reviewed', '1'); this.forceUpdate(); },
       reviewLater: () => { localStorage.setItem('hrtdaily.reviewSnooze', String(Date.now())); this.forceUpdate(); },
