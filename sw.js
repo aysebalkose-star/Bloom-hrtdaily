@@ -1,5 +1,5 @@
-const CACHE = 'hrtdaily-v6';
-const ASSETS = ['./', './index.html', './app.html', './blog.html', './guide.html', './perimenopause-symptoms.html', './hrt-and-sleep.html', './which-hrt-patch-did-i-put-on.html', './terms.html', './privacy.html', './refunds.html', './support.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './og-image.png', './shots/today.png', './shots/calendar.png', './shots/plan.png', './shots/journal.png'];
+const CACHE = 'hrtdaily-v7';
+const ASSETS = ['./', './index.html', './app.html', './blog.html', './guide.html', './perimenopause-symptoms.html', './hrt-and-sleep.html', './which-hrt-patch-did-i-put-on.html', './calming-your-mind-menopause.html', './life-after-menopause.html', './why-track-hormones-and-emotions.html', './menopause-journaling.html', './self-love-menopause.html', './terms.html', './privacy.html', './refunds.html', './support.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './og-image.png', './shots/today.png', './shots/calendar.png', './shots/plan.png', './shots/journal.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
