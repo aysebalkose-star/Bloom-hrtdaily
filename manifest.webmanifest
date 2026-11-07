@@ -25,5 +25,28 @@
       "type": "image/png",
       "purpose": "any maskable"
     }
+  ],
+  "screenshots": [
+    {
+      "src": "./shots/today.png",
+      "sizes": "1170x2391",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Today's HRT doses at a glance"
+    },
+    {
+      "src": "./shots/calendar.png",
+      "sizes": "1170x2391",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "Your whole month, colour-coded"
+    },
+    {
+      "src": "./shots/journal.png",
+      "sizes": "1170x2391",
+      "type": "image/png",
+      "form_factor": "narrow",
+      "label": "A quiet daily journal"
+    }
   ]
 }
