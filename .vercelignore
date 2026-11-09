@@ -1,0 +1,8 @@
+# Marketing & store assets — kept in the repo, not part of the live site
+marketing/
+
+# Internal docs (not served)
+PLAY.md
+DEPLOY.md
+LAUNCH.md
+SELLING.md
