@@ -64,3 +64,13 @@ hrt tracker, menopause, hormone therapy, menopause tracker, hrt planner, estroge
 
 ## ⚠️ One thing to line up first
 The welcome guide tells buyers their app link is **https://hrtdaily.com**. Connect that domain in Vercel **before** you start selling, so the link works — or tell me your current live URL and I'll swap it into the guide for the interim.
+
+---
+
+## How access works (freemium — Lever B)
+- The app is **free to try**: anyone can track **one treatment** free.
+- Adding a **second treatment** shows an unlock screen (Buy → `payhip.com/b/1Rwq8`, or "Enter your code").
+- After purchase, the buyer gets the **Welcome Guide** with the lifetime **unlock code** (`HRTDAILY-LIFETIME`) — they enter it once per device to unlock unlimited treatments.
+- It's a *soft* gate (client-side): good enough for a $19 product; the enforced model is the future Google Play subscription.
+
+**To change the unlock code:** update `CODE_HASH` in `/paywall.js` (sha-256 of the new code) and the code in this guide. Ask me and I'll regenerate both.
