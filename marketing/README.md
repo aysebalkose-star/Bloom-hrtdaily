@@ -19,8 +19,10 @@ Live product: https://payhip.com/b/1Rwq8 · wired into the site's "Get lifetime 
 - `PINS-INDEX.md` — maps each pin → destination URL + suggested title/description
 - `_contact-sheet.png` — overview of all pins
 
-### `seo/` — content strategy
+### `seo/` — content strategy & distribution
 - `LONG-TAIL-CONTEXT.md` — the "tracking hormone intakes" keyword cluster + next post ideas
+- `APP-LISTINGS.md` — paste-ready backlink/listing kit: names, logo, short & long descriptions, tags, maker comments, a prioritised directory list, and a submission tracker
+- `REDDIT-POSTS.md` — value-first Reddit post drafts + comment templates and etiquette (what gets removed as spam, and what doesn't)
 
 ## Related docs in the repo root
 - `PLAY.md` — Google Play (TWA) prep checklist
