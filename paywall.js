@@ -1,10 +1,11 @@
-/* HRT Daily — soft freemium gate.
-   Free: Today + logging + ONE treatment.
-   Pro ($19): unlimited treatments + Calendar + month Planner + Journal.
+/* HRT Daily — soft freemium gate (pure quantity model).
+   Free: the WHOLE app (Today, Calendar, Planner, Journal) for ONE treatment.
+   Pro ($19): unlimited treatments.
    Standalone: include <script src="./paywall.js"></script> in app.html's <head>.
-   Gates at the data layer (treatments) AND intercepts navigation to locked
-   sections, so it works regardless of the app's internals and survives
-   future re-exports. Soft/client-side by design; real enforcement = app stores. */
+   Gates at the data layer only — the paywall shows when you try to save a
+   SECOND treatment. Every section is free for the first treatment, so people
+   see the calendar/journal working before they're asked to pay.
+   Soft/client-side by design; real enforcement = app stores. */
 (function () {
   'use strict';
   var DATA_KEY = 'hrt-daily-v1';
@@ -12,7 +13,6 @@
   var FREE_LIMIT = 1; // treatments allowed before unlocking
   var BUY_URL = 'https://payhip.com/b/1Rwq8';
   var CODE_HASH = '828fed0fa5d1d99ade3e149d856af6f546378ca0997bf465726ed071d9ffb6df'; // sha-256 of HRTDAILY-LIFETIME
-  var LOCKED_TABS = { 'Calendar': 1, 'Journal': 1 }; // bottom-nav labels that require Pro
 
   function isPro() { try { return localStorage.getItem(PRO_KEY) === '1'; } catch (e) { return false; } }
   var _setItem = localStorage.setItem.bind(localStorage);
@@ -30,18 +30,6 @@
     return _setItem(k, v);
   };
 
-  /* 2) Navigation gate: block locked sections (Calendar / Journal / Plan dates). */
-  document.addEventListener('click', function (e) {
-    if (isPro()) return;
-    var btn = e.target && e.target.closest ? e.target.closest('button') : null;
-    if (!btn) return;
-    var t = (btn.textContent || '').trim();
-    if (LOCKED_TABS[t] || t.indexOf('Plan dates') === 0) {
-      e.preventDefault(); e.stopImmediatePropagation();
-      showPaywall();
-    }
-  }, true);
-
   async function sha256Hex(str) {
     var buf = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(str));
     return Array.from(new Uint8Array(buf)).map(function (b) { return b.toString(16).padStart(2, '0'); }).join('');
@@ -54,7 +42,7 @@
     if (!document.body) { document.addEventListener('DOMContentLoaded', mountUnlockButton); return; }
     var b = el('button', 'position:fixed;left:50%;bottom:86px;transform:translateX(-50%);z-index:50;border:none;background:#3A6EA8;color:#fff;font-family:Karla,system-ui,sans-serif;font-weight:700;font-size:14px;padding:11px 20px;border-radius:99px;box-shadow:0 8px 24px rgba(58,110,168,0.35);cursor:pointer;display:flex;align-items:center;gap:7px;');
     b.id = 'hrtd-unlockbtn';
-    b.innerHTML = '<span style="font-size:13px;">🔒</span> Unlock full access';
+    b.innerHTML = '<span style="font-size:13px;">✦</span> Unlock unlimited treatments';
     b.addEventListener('click', function () { showPaywall(); });
     document.body.appendChild(b);
   }
@@ -66,13 +54,13 @@
     var card = el('div', 'background:#F6F9FC;max-width:420px;width:100%;border-radius:22px;padding:30px 26px;box-shadow:0 30px 80px rgba(30,58,84,0.35);text-align:center;max-height:92vh;overflow:auto;');
     card.innerHTML =
       '<div style="width:52px;height:52px;border-radius:15px;background:#3A6EA8;color:#fff;display:flex;align-items:center;justify-content:center;font-family:Newsreader,serif;font-weight:800;font-size:22px;margin:0 auto 16px;">HD</div>' +
-      '<h2 style="font-family:Newsreader,serif;font-weight:800;font-size:25px;color:#22364F;margin:0 0 10px;line-height:1.2;">Unlock the full tracker</h2>' +
-      '<p style="font-size:16px;color:#5A6B80;line-height:1.5;margin:0 0 14px;">Your first treatment and today\'s view are free. Unlock lifetime access to get everything:</p>' +
+      '<h2 style="font-family:Newsreader,serif;font-weight:800;font-size:25px;color:#22364F;margin:0 0 10px;line-height:1.2;">Add unlimited treatments</h2>' +
+      '<p style="font-size:16px;color:#5A6B80;line-height:1.5;margin:0 0 14px;">Your first treatment is free — calendar, planner and journal included. Unlock lifetime access to track as many as you need:</p>' +
       '<ul style="text-align:left;max-width:320px;margin:0 auto 18px;padding-left:0;list-style:none;font-size:15.5px;color:#33465C;line-height:1.5;">' +
-        '<li style="margin:7px 0;">✓ <b>All your treatments</b> — patches, pills, gels, pellets</li>' +
-        '<li style="margin:7px 0;">✓ <b>Calendar</b> — your whole month at a glance</li>' +
-        '<li style="margin:7px 0;">✓ <b>Planner</b> — tap the dates you take each one</li>' +
-        '<li style="margin:7px 0;">✓ <b>Journal</b> — note how you\'re feeling</li>' +
+        '<li style="margin:7px 0;">✓ <b>Unlimited treatments</b> — estrogen, progesterone, testosterone</li>' +
+        '<li style="margin:7px 0;">✓ <b>Every type</b> — patches, pills, gels, pellets</li>' +
+        '<li style="margin:7px 0;">✓ <b>All on one calendar</b>, each in its own colour</li>' +
+        '<li style="margin:7px 0;">✓ <b>Yours for life</b> — one payment, no subscription</li>' +
       '</ul>' +
       '<a href="' + BUY_URL + '" target="_blank" rel="noopener" style="display:block;background:#3A6EA8;color:#fff;text-decoration:none;font-weight:700;font-size:17px;padding:15px;border-radius:14px;box-shadow:0 8px 22px rgba(58,110,168,0.3);">Get lifetime access · $19</a>' +
       '<p style="font-size:13px;color:#9DB0C2;margin:10px 0 18px;">One-time payment · yours for life · private &amp; offline</p>' +
