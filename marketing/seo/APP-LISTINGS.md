@@ -18,7 +18,7 @@ Everything you need to list HRT Daily across app directories, PWA catalogues, so
 | **Launch / open-app URL** | https://hrtdaily.com/app.html |
 | **Category** | Health & Fitness · Medical · Women's Health |
 | **Platforms** | Web app (PWA) · installable on iOS, Android, desktop · Android (Google Play) coming soon |
-| **Pricing** | Free to track your first treatment · $19 one-time to unlock everything (no subscription) |
+| **Pricing** | Full app free for your first treatment · $19 one-time for unlimited treatments (no subscription) |
 | **Maker** | HRT Daily (independent) |
 | **Contact email** | hello@hrtdaily.com |
 | **Year** | 2026 |
@@ -87,7 +87,7 @@ Most directories want: **1 logo (square) + 2–5 screenshots**. Use `icon-512.pn
 >
 > **Completely private.** No account, no cloud, nothing uploaded. Everything you enter stays on your own device, and it works fully offline — even on a plane.
 >
-> **Free to start, yours for life.** Track your first treatment free; a one-time $19 unlocks unlimited treatments, the calendar, the month planner and the journal. No subscription. Use it in any browser on your phone or computer, and install it to your home screen like an app.
+> **Free to start, yours for life.** The whole app — calendar, planner and journal — is free for your first treatment; a one-time $19 unlocks unlimited treatments. No subscription. Use it in any browser on your phone or computer, and install it to your home screen like an app.
 >
 > _HRT Daily is a personal tracking tool, not a medical device, and does not provide medical advice. Always follow your prescriber's instructions._
 
