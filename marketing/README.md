@@ -22,6 +22,7 @@ Live product: https://payhip.com/b/1Rwq8 · wired into the site's "Get lifetime 
 ### `seo/` — content strategy & distribution
 - `LONG-TAIL-CONTEXT.md` — the "tracking hormone intakes" keyword cluster + next post ideas
 - `APP-LISTINGS.md` — paste-ready backlink/listing kit: names, logo, short & long descriptions, tags, maker comments, a prioritised directory list, and a submission tracker
+- `HRT-Daily-App-Listing-Kit.pdf` — the same listing copy as a polished, shareable/downloadable PDF with the logo and all four screenshots embedded
 - `REDDIT-POSTS.md` — value-first Reddit post drafts + comment templates and etiquette (what gets removed as spam, and what doesn't)
 
 ## Related docs in the repo root
